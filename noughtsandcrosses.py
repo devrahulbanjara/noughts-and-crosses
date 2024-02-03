@@ -3,6 +3,9 @@ import os.path
 import json
 random.seed()
 
+
+
+
 def draw_board(board):
     print(" ",end="")
     print("-"*11)
@@ -18,50 +21,91 @@ def welcome(board):
     print("Welcome to Noughts and Crosses!")
     draw_board(board)
 
+
 def initialise_board(board):
-    # develop code to set all elements of the board to one space ' '
+    for i in range(3):
+        for j in range(3):
+            board[i][j] = ' '
     return board
     
+    
+    
 def get_player_move(board):
-    # develop code to ask the user for the cell to put the X in,
-    # and return row and col
-    return row, col
+    while True:
+        try:
+            move = int(input("Enter the cell number to place 'X': "))
+            if move >=1 and move <=9:
+                #since there are three elements in a row //3 
+                #the index starts at 0 so move-1
+                row = (move - 1) // 3
+                col = (move - 1) % 3
+                if board[row][col] == ' ':
+                    return row, col
+                else:
+                    print("Cell already occupied. Choose another.")
+            else:
+                print("Invalid input. Enter a number between 1 and 9.")
+        except ValueError:
+            print("Invalid input. Enter a number between 1 and 9.")
+            
+            
 
 def choose_computer_move(board):
-    # develop code to let the computer chose a cell to put a nought in
-    # and return row and col
-    return row, col
+    while True:
+        move=random.randint(1,9)
+        row = (move - 1) // 3
+        col = (move - 1) % 3
+        if board[row][col] == ' ':
+            return row, col    
 
 
 def check_for_win(board, mark):
     # develop code to check if either the player or the computer has won
     # return True if someone won, False otherwise
-    return False
+    
+    if (board[0][0] == mark and board[0][1] == mark and board[0][2] == mark) or \
+   (board[1][0] == mark and board[1][1] == mark and board[1][2] == mark) or \
+   (board[2][0] == mark and board[2][1] == mark and board[2][2] == mark) or \
+   (board[0][0] == mark and board[1][0] == mark and board[2][0] == mark) or \
+   (board[0][1] == mark and board[1][1] == mark and board[2][1] == mark) or \
+   (board[0][2] == mark and board[1][2] == mark and board[2][2] == mark) or \
+   (board[0][0] == mark and board[1][1] == mark and board[2][2] == mark) or \
+   (board[0][2] == mark and board[1][1] == mark and board[2][0] == mark):
+        return True
+    else:
+        return False
+
 
 def check_for_draw(board):
-    # develop cope to check if all cells are occupied
-    # return True if it is, False otherwise
+    for row in board:
+        for cell in row:
+            if cell == ' ':
+                return False
     return True
+
         
 def play_game(board):
-    # develop code to play the game
-    # star with a call to the initialise_board(board) function to set
-    # the board cells to all single spaces ' '
-    # then draw the board
-    # then in a loop, get the player move, update and draw the board
-    # check if the player has won by calling check_for_win(board, mark),
-    # if so, return 1 for the score
-    # if not check for a draw by calling check_for_draw(board)
-    # if drawn, return 0 for the score
-    # if not, then call choose_computer_move(board)
-    # to choose a move for the computer
-    # update and draw the board
-    # check if the computer has won by calling check_for_win(board, mark),
-    # if so, return -1 for the score
-    # if not check for a draw by calling check_for_draw(board)
-    # if drawn, return 0 for the score
-    #repeat the loop
-    return 0
+    initialise_board(board)
+    draw_board(board)
+    while True:
+        row, col = get_player_move(board)
+        board[row][col] = 'X'
+        draw_board(board)
+
+        if check_for_win(board, 'X'):
+            return 1
+        elif check_for_draw(board):
+            return 0
+
+        row, col = choose_computer_move(board)
+        board[row][col] = 'O'
+        draw_board(board)
+
+        #if computer wins reduce the score by 1
+        if check_for_win(board, 'O'):
+            return -1
+        elif check_for_draw(board):
+            return 0
                     
                 
 def menu():
@@ -72,22 +116,47 @@ def menu():
     choice = input("Enter your choice: ")
     return choice
 
+
 def load_scores():
-    # develop code to load the leaderboard scores
-    # from the file 'leaderboard.txt'
-    # return the scores in a Python dictionary
-    # with the player names as key and the scores as values
-    # return the dictionary in leaders
+    leaders = {}
+    try:
+        with open('leaderboard.txt', 'r') as file:
+            leaders = json.load(file)
+    except FileNotFoundError:
+        print("Leaderboard file not found.")
+    except json.JSONDecodeError:
+        print("Error decoding JSON. Leaderboard file may be corrupted.")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
     return leaders
-    
+
+
 def save_score(score):
-    # develop code to ask the player for their name
-    # and then save the current score to the file 'leaderboard.txt'
-    return
+    name = input("Enter your name: ")
+    leaders = load_scores()
+    
+    if not name.isalpha() or not str(score).isdigit():
+        print("Invalid input. Please enter a valid name and score.")
+        return
+    
+    if name in leaders:
+        leaders[name] += score
+    else:
+        leaders[name] = score
+    
+    try:
+        with open('leaderboard.txt', 'w') as file:
+            json.dump(leaders, file)
+        print("Score saved successfully.")
+    except Exception as e:
+        print(f"An error occurred while saving the score: {e}")
 
 
 def display_leaderboard(leaders):
-    # develop code to display the leaderboard scores
-    # passed in the Python dictionary parameter leader
-    pass
-
+    print("Leaderboard:")
+    if not leaders:
+        print("No scores available.")
+    else:
+        for name, score in leaders.items():
+            print(f"{name}: {score}")
