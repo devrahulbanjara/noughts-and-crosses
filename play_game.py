@@ -1,6 +1,5 @@
 from noughtsandcrosses import *
 
-    
 def main():
     board = [ ['1','2','3'],\
               ['4','5','6'],\
@@ -25,7 +24,6 @@ def main():
             return
 
 
-    
 # Program execution begins here
 if __name__ == '__main__':
     main()
