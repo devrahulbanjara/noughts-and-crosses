@@ -4,13 +4,19 @@ import json
 random.seed()
 
 def draw_board(board):
-    # develop code to draw the board
-    pass
+    print(" ",end="")
+    print("-"*11)
+    for row in board:
+        print("| ",end="")
+        print(" | ".join(row),end="")
+        print(" |")
+        print(" ",end="")
+        print("-"*11)
+        
 
 def welcome(board):
-    # prints the welcome message
-    # display the board by calling draw_board(board)
-    pass
+    print("Welcome to Noughts and Crosses!")
+    draw_board(board)
 
 def initialise_board(board):
     # develop code to set all elements of the board to one space ' '
@@ -59,11 +65,11 @@ def play_game(board):
                     
                 
 def menu():
-    # get user input of either '1', '2', '3' or 'q'
-    # 1 - Play the game
-    # 2 - Save score in file 'leaderboard.txt'
-    # 3 - Load and display the scores from the 'leaderboard.txt'
-    # q - End the program
+    print("1 - Play the game")
+    print("2 - Save score in file 'leaderboard.txt'")
+    print("3 - Load and display the scores from 'leaderboard.txt'")
+    print("q - End the program")
+    choice = input("Enter your choice: ")
     return choice
 
 def load_scores():
