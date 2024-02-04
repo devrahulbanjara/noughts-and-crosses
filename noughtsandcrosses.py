@@ -132,14 +132,18 @@ def play_game(board):
 
 def menu():
     """Gets user input of '1', '2', '3', or 'q'."""
-    print("\nEnter one of the following options: ")
-    print("     1 - Play the game")
-    print("     2 - Save score in file 'leaderboard.txt'")
-    print("     3 - Load and display the scores from 'leaderboard.txt'")
-    print("     q - End the program")
-    choice = input("1, 2, 3, or q? ")
-    print()
-    return choice
+    while True:
+        print("\nEnter one of the following options: ")
+        print("     1 - Play the game")
+        print("     2 - Save score in file 'leaderboard.txt'")
+        print("     3 - Load and display the scores from 'leaderboard.txt'")
+        print("     q - End the program")
+        choice = input("1, 2, 3, or q? ").lower()
+        print()
+
+        if choice in ('1', '2', '3', 'q'):
+            return choice
+        print("Invalid choice. Please enter a valid option.")
 
 
 def load_scores():
