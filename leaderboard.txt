@@ -1,1 +1,1 @@
-{"Rahul": 1, "Sarthak": 0}
+{"Rahul": 1, "Sarthak": 0, "Diwas": 1}
