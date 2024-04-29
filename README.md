@@ -1,1 +1,2 @@
-# Noughts-and-Crosses---Python
+# noughts-and-crosses
+The Noughts and Crosses (Tic-Tac-Toe) game in Python allows two players to take turns marking spaces in a 3x3 grid to win by placing three of their marks in a horizontal, vertical, or diagonal row while preventing their opponent from doing the same. It involves checking for win conditions after each move, handling player turns, and detecting a draw if no player wins. Players can input their moves through the console, and the game ends when a player wins or the board is full.
